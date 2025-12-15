@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import inspect
+
+if not hasattr(inspect, 'getargspec'):
+    def getargspec(func):
+        return inspect.getfullargspec(func)[:4]
+    inspect.getargspec = getargspec
+
 # setup.py is part of kanji-colorize which makes KanjiVG data into
 # colored stroke order diagrams
 #

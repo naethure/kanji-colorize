@@ -243,7 +243,7 @@ class KanjiColorizer:
         self._parser = argparse.ArgumentParser(description='Create a set of '
                                              'colored stroke order svgs')
         self._parser.add_argument('--mode', default='spectrum',
-                    choices=['spectrum', 'contrast'],
+                    choices=['spectrum', 'contrast', 'prebaked'],
                     help='spectrum: color progresses evenly through the'
                         ' spectrum; nice for seeing the way the kanji is'
                         ' put together at a glance, but has the disadvantage'
@@ -252,7 +252,8 @@ class KanjiColorizer:
                         'with which stroke.  contrast: maximizes contrast '
                         'among any group of consecutive strokes, using the '
                         'golden ratio; also provides consistency by using '
-                        'the same sequence for every kanji.  (default: '
+                        'the same sequence for every kanji.  prebaked: uses '
+                        'a predefined set of colors. (default: '
                         '%(default)s)')
         self._parser.add_argument('--saturation', default=0.95, type=float,
                     help='a decimal indicating saturation where 0 is '
@@ -690,6 +691,10 @@ The original SVG has the following copyright:
             for i in 2 * list(range(n)):
                 yield self._hsv_to_rgbhexcode(i * angle,
                     self.settings.saturation, self.settings.value)
+        elif (self.settings.mode == "prebaked"):
+            colors = ["#ff0000", "#ff7f00", "#ffff00", "#54ff00", "#00ffd4", "#003fff", "#9400ff", "#ff00d4", "#b24759", "#b26b47", "#b2a047", "#7cb247", "#47b28e", "#4774b2", "#7447b2", "#b247b2", "#661000", "#664400", "#556600", "#116600", "#006666", "#000866", "#4c0066", "#660044", "#e58989", "#e5b789", "#e5e589", "#a8e589", "#89e5d6", "#89a0e5", "#bf89e5", "#e589d6"]
+            for i in 2 * list(range(n)):
+                yield colors[i % len(colors)]
         else:  # spectrum is default
             for i in 2 * list(range(n)):
                 yield self._hsv_to_rgbhexcode(float(i) / n,
